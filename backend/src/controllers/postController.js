@@ -1,5 +1,6 @@
 const { createPost , getFeed} = require('../services/postService');
 const parseBody = require('../utils/parseBody');
+const errorHandler = require('../middlewares/errorHandler');
 const url = require('url');
 
 const handleCreatePost = async (req, res) => {
@@ -11,7 +12,7 @@ const handleCreatePost = async (req, res) => {
         res.end(JSON.stringify({ message: 'Post created successfully', post }));
     }
     catch (error){
-        res.end(JSON.stringify({ message: 'Error creating post', error }));
+        errorHandler(error, res);
     }
 };
 
@@ -30,9 +31,7 @@ const handleGetFeed = async (req, res) => {
         }));   
     }
     catch (error){
-        res.statusCode = 500;
-        res.setHeader('content-type', 'application/json');
-        res.end(JSON.stringify({ message: 'Error retrieving feed', error }));
+        errorHandler(error, res);
     }
 };
 

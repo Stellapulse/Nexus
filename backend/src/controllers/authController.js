@@ -1,5 +1,6 @@
 const parseBody = require('../utils/parseBody');
 const authServices = require('../services/authServices');
+const errorhandler = require('../middlewares/errorHandler');
 
 const signup = async (req,res) =>{
     try {
@@ -10,8 +11,7 @@ const signup = async (req,res) =>{
         res.end(JSON.stringify(result));
     }
     catch (err) {
-        res.statusCode = 500;
-        res.end(JSON.stringify({message : "Invalid request Body", error: err.message}));
+        errorhandler(err, res);
     }
 };
 
@@ -23,8 +23,7 @@ const login = async (req,res) => {
         res.end(JSON.stringify(result));
     }
     catch (err) {
-        res.statusCode = 500;
-        res.end(JSON.stringify({message : "Login failed", error: err.message}));
+        errorhandler(err, res );
     }
 };
 

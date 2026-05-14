@@ -1,4 +1,6 @@
 const pool = require('../config/db');
+const AppError = require('../core/AppError');
+
 
 
 
@@ -6,7 +8,7 @@ const createPost = async (userId, data) => {
     const { title, content } = data;
     
     if(!content){
-        throw new Error('content is required');
+        throw new AppError('content is required', 400);
     }
 
     try {
@@ -18,7 +20,7 @@ const createPost = async (userId, data) => {
         return result.rows[0];
     } catch (err){
         console.error("DB insert error:", err);
-        throw err;
+        throw new AppError('Error occurred while creating post', 500);
     }
 
 };
@@ -55,7 +57,7 @@ const getFeed = async (page, limit) => {
 
     } catch (err){
         console.error("DB query error:", err);
-        throw err;  
+        throw new AppError('Error occurred while fetching feed', 500);
     }
 };
     

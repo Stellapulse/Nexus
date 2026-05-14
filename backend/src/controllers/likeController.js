@@ -1,5 +1,5 @@
 const {createLikeUnlike , getLikesCount} = require('../services/likeService');
-
+const errorHandler = require('../middlewares/errorHandler');
 
 const handleLikeUnlike = async (req, res) =>{
     try{
@@ -10,9 +10,7 @@ const handleLikeUnlike = async (req, res) =>{
         res.end(JSON.stringify(result));
 
     }catch (error){
-        res.statusCode = 400;
-        res.setHeader('content-type', 'application/json');
-        res.end(JSON.stringify({ message: 'Error processing like/unlike', error: error.message }));
+        errorHandler(error, res);
     }
 
 };
@@ -24,9 +22,7 @@ const handleGetLikesCount = async (req, res) => {
         res.setHeader('content-type', 'application/json');
         res.end(JSON.stringify({ message: 'Likes count retrieved successfully', count }));
     } catch (error) {
-        res.statusCode = 400;
-        res.setHeader('content-type', 'application/json');
-        res.end(JSON.stringify({ message: 'Error retrieving likes count', error: error.message }));
+        errorHandler(error, res);
     }
 };  
 

@@ -1,4 +1,5 @@
 const {createComment, getComments} = require('../services/commentService');
+const errorHandler = require('../middlewares/errorHandler');
 const parseBody = require('../utils/parseBody');
 
 
@@ -12,9 +13,7 @@ const handleCreateComment = async (req, res) => {
         res.setHeader('content-type', 'application/json');
         res.end(JSON.stringify({ message: 'Comment created successfully', comment }));  
     } catch (error) {
-        res.statusCode = 400;
-        res.setHeader('content-type', 'application/json');
-       res.end(JSON.stringify({ message: 'Error creating comment', error: error.message }));
+        errorHandler(error, res );
     }
 };
 
@@ -26,11 +25,11 @@ const handleGetComments = async (req,res) => {
         res.setHeader('content-type', 'application/json');
         res.end(JSON.stringify({ message: 'Comments retrieved successfully', comments }));  
     } catch (error) {
-        res.statusCode = 400;
-        res.setHeader('content-type', 'application/json');
-        res.end(JSON.stringify({ message: 'Error retrieving comments', error: error.message }));
+            res.statusCode = 400;
+            res.setHeader('content-type', 'application/json');
+            res.end(JSON.stringify({ message: 'Error retrieving comments', error: error.message }));
 
-    }
+        }
 };
 
 module.exports = {

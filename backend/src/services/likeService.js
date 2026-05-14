@@ -1,4 +1,5 @@
 const pool = require('../config/db');
+const AppError = require('../core/AppError');
 
 const createLikeUnlike = async (postId, userId) => {
     const client = await pool.connect();
@@ -46,7 +47,7 @@ const createLikeUnlike = async (postId, userId) => {
     } catch (error) {
         await client.query('ROLLBACK');
         console.error('Error in like/unlike operation:', error);
-        throw error;
+        throw new AppError('Error occurred while processing like/unlike operation', 500);
     } finally {
         client.release();// Ensure the client is released back to the pool
     }
@@ -60,7 +61,7 @@ const getLikesCount = async(postId) => {
         );
         return parseInt(result.rows[0].count, 10);
     } catch (error) {
-        throw new Error('Error occurred while fetching likes count');
+        throw new AppError('Error occurred while fetching likes count', 500);
 
     }
 };
